@@ -2,13 +2,13 @@ const mongoose = require('mongoose')
 const Firestore = require('@google-cloud/firestore')
 const {
   config: {
-    database: { name, host }
+    database: { uri }
   }
 } = require('../config');
 
 class dbDriver {
   async openConnection() {
-    await mongoose.connect(`mongodb://${host}/${name}`, {
+    await mongoose.connect(uri, {
       useNewUrlParser: true
     });
     this.db = mongoose.connection;

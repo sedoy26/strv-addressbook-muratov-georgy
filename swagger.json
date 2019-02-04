@@ -1,0 +1,148 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "STRV-ADDRESSBOOK API",
+    "version": "0.0.1",
+    "title": "STRV-ADDRESSBOOK",
+    "contact": {
+      "email": "26muratov@gmail.com"
+    }
+  },
+  "schemes": ["https"],
+  "paths": {
+    "/user/login": {
+      "put": {
+        "summary": "Endpoint to receive JWT accessToken",
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User object that needs to be logged in",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserSchema"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "$ref": "#/definitions/AccessTokenScheme"
+            }
+          },
+          "401": {
+            "description": "Password or login is incorrect"
+          },
+          "422": {
+            "description": "Unprocessable entity"
+          }
+        }
+      }
+    },
+    "/user/signup": {
+      "put": {
+        "summary": "Endpoint to register new user",
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User object that needs to be registered",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserSchema"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "422": {
+            "description": "Unprocessable entity"
+          },
+          "409": {
+            "description": "Conflict"
+          }
+        }
+      }
+    },
+    "/user/addContact": {
+      "put": {
+        "security": [
+          {
+            "accessToken": []
+          }
+        ],
+        "summary": "Endpoint to add new contact",
+        "consumes": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User object that needs to be registered",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ContactSchema"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "422": {
+            "description": "Unprocessable entity"
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "accessToken": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "definitions": {
+    "UserSchema": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "ContectSchema": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "AccessTokenScheme": {
+      "type": "object",
+      "properties": {
+        "accessToken": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
